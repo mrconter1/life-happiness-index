@@ -766,14 +766,14 @@ export default function Home() {
                       
                       const verticalLinePlugin = {
                         id: 'verticalLine',
-                        afterDraw: (chart: any) => {
+                        afterDraw: (chart: ChartJS) => {
                           if (score !== null) {
                             const ctx = chart.ctx;
                             const xAxis = chart.scales.x;
                             const yAxis = chart.scales.y;
                             
                             // Find x position for the score
-                            const xPos = xAxis.getPixelForValue(score.toFixed(1));
+                            const xPos = xAxis.getPixelForValue(score);
                             
                             // Calculate y position on the bell curve
                             const z = (score - 5) / 2;
