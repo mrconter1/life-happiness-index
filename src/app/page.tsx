@@ -305,7 +305,7 @@ export default function Home() {
                 'Brush occasionally (few times per week)',
                 'Brush once daily',
                 'Brush twice daily',
-                'Brush twice daily + floss daily'
+                'Brush twice daily + occasional floss'
               ]
             )}
             {renderRadioQuestion(
@@ -321,7 +321,7 @@ export default function Home() {
             )}
             {renderRadioQuestion(
               '5f',
-              '5f. Chronic health conditions?',
+              '5f. Chronic health conditions (e.g., back pain, migraines, arthritis)?',
               [
                 'None',
                 'Minor condition',
@@ -352,18 +352,7 @@ export default function Home() {
             )}
             {renderRadioQuestion(
               '6b',
-              '6b. Home-cooked meals compared to average?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
-            )}
-            {renderRadioQuestion(
-              '6c',
-              '6c. How healthy do you eat overall?',
+              '6b. How healthy do you eat overall?',
               [
                 'Very unhealthy',
                 'Unhealthy',
