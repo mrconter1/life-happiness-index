@@ -293,9 +293,9 @@ export default function Home() {
             {renderSliderQuestion(
               '3a',
               'How many hours per day do you interact with friends?',
-              '0 hours',
-              '2-3 hours',
-              '5+ hours'
+              'Well below average',
+              'Average (~1hr/day)',
+              'Well above average'
             )}
             {renderSliderQuestion(
               '3b',
