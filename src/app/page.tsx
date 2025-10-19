@@ -702,12 +702,24 @@ export default function Home() {
                   <div className="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                     {score.toFixed(2)}
                   </div>
-                  <p className="text-sm text-slate-400">out of 10.00</p>
+                  <p className="text-sm text-slate-400">out of 10</p>
+                  {/* Band label */}
+                  {(() => {
+                    const s = score ?? 0;
+                    const band =
+                      s < 4 ? "Below average" : s < 6 ? "Average" : s < 8 ? "Above average" : "Exceptional";
+                    const pct =
+                      s < 4 ? "~15th pct" : s < 6 ? "~50th pct" : s < 8 ? "~80th pct" : "~95th pct";
+                    return (
+                      <p className="text-sm text-slate-300 italic">
+                        {band} • {pct}
+                      </p>
+                    );
+                  })()}
                   <div className="mt-4 pt-4 border-t border-slate-700">
-                    <p className="text-sm text-slate-300 leading-relaxed">
-                      This score uses z-score transformation assuming normal distribution. 
-                      Being above average (5/10) has exponentially more impact than being 
-                      below average, reflecting how life satisfaction works in reality.
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      Score is a percentile-weighted average of all answers (z-score method). 
+                      Data never leaves your browser.
                     </p>
                   </div>
                 </div>
