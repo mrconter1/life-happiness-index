@@ -111,10 +111,10 @@ export default function Home() {
           </CardHeader>
         </Card>
 
-        {/* 1. Career & Income */}
+        {/* Career & Income */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">1. Career & Income</CardTitle>
+            <CardTitle className="text-xl">Career & Income</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -148,10 +148,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 2. Exercise */}
+        {/* Exercise */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">2. Exercise</CardTitle>
+            <CardTitle className="text-xl">Exercise</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -171,10 +171,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 3. Social Life */}
+        {/* Social Life */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">3. Social Life</CardTitle>
+            <CardTitle className="text-xl">Social Life</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -201,10 +201,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 4. Financial Health */}
+        {/* Financial Health */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">4. Financial Health</CardTitle>
+            <CardTitle className="text-xl">Financial Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-6">
@@ -267,10 +267,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 5. Physical Health */}
+        {/* Physical Health */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">5. Physical Health</CardTitle>
+            <CardTitle className="text-xl">Physical Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -370,10 +370,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 6. Education & Nutrition */}
+        {/* Education & Nutrition */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">6. Education & Nutrition</CardTitle>
+            <CardTitle className="text-xl">Education & Nutrition</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -393,10 +393,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 7. Hobbies & Skills */}
+        {/* Hobbies & Skills */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">7. Hobbies & Skills</CardTitle>
+            <CardTitle className="text-xl">Hobbies & Skills</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -416,10 +416,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 8. Sleep */}
+        {/* Sleep */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">8. Sleep</CardTitle>
+            <CardTitle className="text-xl">Sleep</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -432,10 +432,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 9. Romantic Relationship */}
+        {/* Romantic Relationship */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">9. Romantic Relationship</CardTitle>
+            <CardTitle className="text-xl">Romantic Relationship</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -448,10 +448,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 10. Family Connection */}
+        {/* Family Connection */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">10. Family Connection</CardTitle>
+            <CardTitle className="text-xl">Family Connection</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -464,10 +464,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 11. Daily Structure & Outdoor */}
+        {/* Daily Structure & Outdoor */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">11. Daily Structure & Outdoor</CardTitle>
+            <CardTitle className="text-xl">Daily Structure & Outdoor</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
@@ -494,10 +494,10 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* 12. Mental Health */}
+        {/* Mental Health */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">12. Mental Health</CardTitle>
+            <CardTitle className="text-xl">Mental Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {renderSliderQuestion(
