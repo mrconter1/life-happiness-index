@@ -72,18 +72,18 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 py-8 px-4">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
         <Card className="border-2">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               Life Happiness Index
             </CardTitle>
             <CardDescription className="text-base mt-3 leading-relaxed">
               This metric predicts how likely you are to be happy—defined as genuinely wanting to exist. 
               Answer each question from a long-term perspective, not just this week. 
-              <span className="block mt-2 font-medium text-slate-700">
+              <span className="block mt-2 font-medium text-slate-300">
                 🔒 All data is saved locally in your browser. Nothing is sent externally.
               </span>
             </CardDescription>
@@ -278,7 +278,7 @@ export default function Home() {
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
                   />
-                </div>
+        </div>
                 <div className="space-y-2">
                   <Label htmlFor="weight" className="text-sm">Weight (kg)</Label>
                   <Input
@@ -529,8 +529,8 @@ export default function Home() {
         </Card>
 
         {/* Placeholder for results */}
-        <Card className="bg-slate-50 border-dashed">
-          <CardContent className="pt-6 text-center text-slate-500">
+        <Card className="bg-slate-900 border-dashed">
+          <CardContent className="pt-6 text-center text-slate-400">
             Results calculation coming soon...
           </CardContent>
         </Card>
