@@ -89,6 +89,11 @@ export default function Home() {
   const calculateScore = () => {
     const scores: number[] = [];
     
+    console.log('=== DEBUG: Calculate Score ===');
+    console.log('Raw answers:', answers);
+    console.log('Height:', height, 'Weight:', weight);
+    console.log('Salary:', salary, 'Savings:', savings);
+    
     // Questions where LEFT (0) is BEST and should be inverted
     const invertedQuestions = ['5a', '5b', '5d', '5e', '1e', '11e'];
     
@@ -98,27 +103,38 @@ export default function Home() {
       
       // Invert if this question has best answer on left
       if (invertedQuestions.includes(key)) {
+        const originalValue = rawValue;
         rawValue = 10 - rawValue; // Flip the scale
+        console.log(`Question ${key}: ${originalValue.toFixed(1)} → INVERTED to ${rawValue.toFixed(1)}`);
+      } else {
+        console.log(`Question ${key}: ${rawValue.toFixed(1)}`);
       }
       
       // Map 0-10 to 0.1-0.9 range (no perfect 1.0, no devastating 0)
       const normalized = 0.1 + (rawValue / 10) * 0.8;
+      console.log(`  → normalized: ${normalized.toFixed(3)}`);
       scores.push(normalized);
     });
     
     // Add BMI score if available (map 0-9 to 0.1-0.9)
     const bmiScore = getBMIScore();
+    console.log('BMI Score:', bmiScore);
     if (bmiScore !== null) {
       const normalized = 0.1 + (bmiScore / 9) * 0.8;
+      console.log(`  → normalized: ${normalized.toFixed(3)}`);
       scores.push(normalized);
     }
     
     // Add savings score if available (map 0-9 to 0.1-0.9)
     const savingsScore = getSavingsScore();
+    console.log('Savings Score:', savingsScore);
     if (savingsScore !== null) {
       const normalized = 0.1 + (savingsScore / 9) * 0.8;
+      console.log(`  → normalized: ${normalized.toFixed(3)}`);
       scores.push(normalized);
     }
+    
+    console.log('All normalized scores:', scores);
     
     if (scores.length === 0) {
       alert('Please answer at least one question before calculating your score.');
@@ -127,10 +143,17 @@ export default function Home() {
     
     // Calculate geometric mean: (Q1 × Q2 × Q3 × ... × QN)^(1/N)
     const product = scores.reduce((acc, val) => acc * val, 1);
+    console.log('Product:', product);
+    console.log('N (count):', scores.length);
+    
     const geometricMean = Math.pow(product, 1 / scores.length);
+    console.log('Geometric mean:', geometricMean);
     
     // Convert back to 0-10 scale
     const finalScore = geometricMean * 10;
+    console.log('Final score (0-10):', finalScore);
+    console.log('=== END DEBUG ===');
+    
     setScore(finalScore);
     
     // Scroll to results
