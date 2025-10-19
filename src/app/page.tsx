@@ -491,6 +491,13 @@ export default function Home() {
               'Average',
               'Well above'
             )}
+            {renderSliderQuestion(
+              '11d',
+              'How tidy/clean is your home compared to average?',
+              'Very messy',
+              'Average',
+              'Very clean & organized'
+            )}
           </CardContent>
         </Card>
 
