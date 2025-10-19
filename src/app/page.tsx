@@ -503,10 +503,10 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '12a',
-              '12a. Mental health treatment history',
-              'No treatment',
-              'Moderate treatment',
-              'Fully stable/No issues'
+              '12a. If mental health has been a challenge, how thoroughly have you addressed it?',
+              'No effort',
+              'Serious effort',
+              'N/A or exhaustive'
             )}
           </CardContent>
         </Card>
