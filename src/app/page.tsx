@@ -16,6 +16,7 @@ export default function Home() {
   const [weight, setWeight] = useState('');
   const [salary, setSalary] = useState('');
   const [savings, setSavings] = useState('');
+  const [score, setScore] = useState<number | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -54,6 +55,111 @@ export default function Home() {
     if (salaryNum === 0) return null;
     const percentage = (savingsNum / salaryNum) * 100;
     return percentage.toFixed(1);
+  };
+
+  const getBMIScore = (): number | null => {
+    const bmi = calculateBMI();
+    if (!bmi) return null;
+    const bmiNum = parseFloat(bmi);
+    
+    if (bmiNum < 17.0) return 0;
+    if (bmiNum < 18.5) return 2;
+    if (bmiNum < 20.1) return 5;
+    if (bmiNum < 23.1) return 9;
+    if (bmiNum < 25.1) return 7;
+    if (bmiNum < 27.6) return 4;
+    if (bmiNum < 30.0) return 2;
+    return 0;
+  };
+
+  const getSavingsScore = (): number | null => {
+    const percentage = calculateSavingsPercentage();
+    if (!percentage) return null;
+    const pct = parseFloat(percentage);
+    
+    if (pct < 0) return 0;
+    if (pct < 5) return 2;
+    if (pct < 10) return 4;
+    if (pct < 15) return 6;
+    if (pct < 20) return 7;
+    if (pct < 30) return 8;
+    return 9;
+  };
+
+  const calculateScore = () => {
+    const scores: number[] = [];
+    
+    console.log('=== DEBUG: Calculate Score ===');
+    console.log('Raw answers:', answers);
+    console.log('Height:', height, 'Weight:', weight);
+    console.log('Salary:', salary, 'Savings:', savings);
+    
+    // Questions where LEFT (0) is BEST and should be inverted
+    const invertedQuestions = ['5a', '5b', '5d', '5e', '1e', '11e'];
+    
+    // Add all slider question scores
+    Object.entries(answers).forEach(([key, value]) => {
+      let rawValue = parseInt(value);
+      
+      // Invert if this question has best answer on left
+      if (invertedQuestions.includes(key)) {
+        rawValue = 9 - rawValue; // Flip the scale
+        console.log(`Question ${key}: ${value} → INVERTED to ${rawValue} → shifted: ${rawValue + 1} → normalized: ${(rawValue + 1) / 10}`);
+      } else {
+        console.log(`Question ${key}: ${value} → shifted: ${rawValue + 1} → normalized: ${(rawValue + 1) / 10}`);
+      }
+      
+      const shifted = rawValue + 1; // 0-9 becomes 1-10
+      const normalized = shifted / 10; // normalize to 0.1-1.0
+      scores.push(normalized);
+    });
+    
+    // Add BMI score if available
+    const bmiScore = getBMIScore();
+    console.log('BMI Score:', bmiScore);
+    if (bmiScore !== null) {
+      const shifted = bmiScore + 1; // 0-9 becomes 1-10
+      const normalized = shifted / 10;
+      console.log(`BMI: ${bmiScore} → shifted: ${shifted} → normalized: ${normalized}`);
+      scores.push(normalized);
+    }
+    
+    // Add savings score if available
+    const savingsScore = getSavingsScore();
+    console.log('Savings Score:', savingsScore);
+    if (savingsScore !== null) {
+      const shifted = savingsScore + 1; // 0-9 becomes 1-10
+      const normalized = shifted / 10;
+      console.log(`Savings: ${savingsScore} → shifted: ${shifted} → normalized: ${normalized}`);
+      scores.push(normalized);
+    }
+    
+    console.log('All normalized scores:', scores);
+    
+    if (scores.length === 0) {
+      alert('Please answer at least one question before calculating your score.');
+      return;
+    }
+    
+    // Calculate geometric mean: (Q1 × Q2 × Q3 × ... × QN)^(1/N)
+    const product = scores.reduce((acc, val) => acc * val, 1);
+    console.log('Product:', product);
+    console.log('N (count):', scores.length);
+    
+    const geometricMean = Math.pow(product, 1 / scores.length);
+    console.log('Geometric mean:', geometricMean);
+    
+    // Convert back to 0-10 scale
+    const finalScore = geometricMean * 10;
+    console.log('Final score (0-10):', finalScore);
+    console.log('=== END DEBUG ===');
+    
+    setScore(finalScore);
+    
+    // Scroll to results
+    setTimeout(() => {
+      document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   };
 
   const renderSliderQuestion = (
@@ -545,10 +651,59 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Placeholder for results */}
-        <Card className="bg-slate-900 border-dashed">
-          <CardContent className="pt-6 text-center text-slate-400">
-            Results calculation coming soon...
+        {/* Results Section */}
+        <Card id="results" className="border-2 border-blue-500/50">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Calculate Your Score</CardTitle>
+            <CardDescription className="text-base mt-2">
+              Your responses are processed locally in your browser using geometric mean.
+              <span className="block mt-1 text-slate-300 font-medium">
+                🔒 No data is sent to any server.
+              </span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex justify-center">
+              <button
+                onClick={calculateScore}
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-all transform hover:scale-105 shadow-lg"
+              >
+                Calculate Happiness Index
+              </button>
+            </div>
+
+            {score !== null && (
+              <div className="mt-8 p-6 bg-gradient-to-br from-blue-950/50 to-purple-950/50 rounded-lg border border-blue-500/30">
+                <div className="text-center space-y-4">
+                  <h3 className="text-xl font-semibold text-slate-200">Your Life Happiness Index</h3>
+                  <div className="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    {score.toFixed(2)}
+                  </div>
+                  <p className="text-sm text-slate-400">out of 10.00</p>
+                  <div className="mt-4 pt-4 border-t border-slate-700">
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      This score represents the geometric mean of all your responses, 
+                      indicating how likely you are to genuinely want to exist based on 
+                      multiple life satisfaction factors.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="text-center text-sm text-slate-400 mt-6">
+              <p>
+                Open source • View code on{' '}
+                <a 
+                  href="https://github.com/mrconter1/life-happiness-index" 
+          target="_blank"
+          rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline"
+                >
+                  GitHub
+                </a>
+              </p>
+            </div>
           </CardContent>
         </Card>
 
