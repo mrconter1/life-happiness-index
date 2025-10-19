@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Life Happiness Index
+
+A metric that predicts how likely you are to be happy—defined as genuinely wanting to exist. All data is processed locally in your browser.
+
+## Features
+
+- **33 life satisfaction questions** across 12 categories
+- **Z-score transformation** for statistical accuracy
+- **Privacy-first**: no data leaves your browser (localStorage only)
+- **Mobile-optimized** with smooth slider controls
+- **Visual bell-curve** showing your position relative to population
+
+## Scoring Method
+
+### 1. Question Types
+- Career, exercise, social life, health, finances, relationships, etc.
+- Each rated 0-10 (where "5" = average)
+
+### 2. Z-Score Transformation
+```
+z = (value - 5) / 2
+percentile = Φ(z)  // Standard normal CDF
+score = percentile × 10
+```
+
+**Why z-score?**
+- Converts linear ratings to population percentiles
+- "7/10" (above average) → ~84th percentile → score of 8.4
+- "8/10" (well above) → ~93rd percentile → score of 9.3
+- Reflects how distributions work in reality
+
+### 3. Final Score
+Simple arithmetic mean of all transformed scores (0-10 scale).
+
+## Score Bands
+
+| Score | Interpretation | Percentile |
+|-------|----------------|------------|
+| 0-4   | Below average  | ~15th      |
+| 4-6   | Average        | ~50th      |
+| 6-8   | Above average  | ~80th      |
+| 8-10  | Exceptional    | ~95th      |
+
+## Tech Stack
+
+- **Next.js 15** (React 19, App Router)
+- **TypeScript**
+- **Tailwind CSS** + shadcn/ui
+- **Chart.js** for visualization
+- **Vercel Analytics**
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Privacy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All calculations happen in your browser. Data is saved to `localStorage` only—nothing is sent to any server.
 
-## Learn More
+## Open Source
 
-To learn more about Next.js, take a look at the following resources:
+Contributions welcome! View the code on [GitHub](https://github.com/mrconter1/life-happiness-index)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with ❤️ for understanding life satisfaction through data
