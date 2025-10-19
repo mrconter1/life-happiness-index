@@ -5,6 +5,30 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 interface Answers {
   [key: string]: string;
@@ -716,6 +740,107 @@ export default function Home() {
                       </p>
                     );
                   })()}
+                  {/* Bell curve with marker */}
+                  <div className="mt-6 h-32">
+                    {(() => {
+                      // Generate normal distribution curve
+                      const labels = [];
+                      const bellData = [];
+                      const markerData = [];
+                      
+                      for (let x = 0; x <= 10; x += 0.2) {
+                        labels.push(x.toFixed(1));
+                        // Normal PDF: mean=5, sd=2
+                        const z = (x - 5) / 2;
+                        const y = (1 / (2 * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z);
+                        bellData.push(y);
+                        
+                        // Add marker point at user's score
+                        if (score !== null && Math.abs(x - score) < 0.1) {
+                          const userZ = (score - 5) / 2;
+                          const userY = (1 / (2 * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * userZ * userZ);
+                          markerData.push(userY);
+                        } else {
+                          markerData.push(null);
+                        }
+                      }
+                      
+                      const verticalLinePlugin = {
+                        id: 'verticalLine',
+                        afterDraw: (chart: any) => {
+                          if (score !== null) {
+                            const ctx = chart.ctx;
+                            const xAxis = chart.scales.x;
+                            const yAxis = chart.scales.y;
+                            
+                            // Find x position for the score
+                            const xPos = xAxis.getPixelForValue(score.toFixed(1));
+                            
+                            // Calculate y position on the bell curve
+                            const z = (score - 5) / 2;
+                            const yValue = (1 / (2 * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * z * z);
+                            const yPos = yAxis.getPixelForValue(yValue);
+                            
+                            ctx.save();
+                            // Draw vertical line
+                            ctx.beginPath();
+                            ctx.moveTo(xPos, yAxis.bottom);
+                            ctx.lineTo(xPos, yPos);
+                            ctx.lineWidth = 2;
+                            ctx.strokeStyle = '#38bdf8';
+                            ctx.stroke();
+                            
+                            // Draw circle on top
+                            ctx.beginPath();
+                            ctx.arc(xPos, yPos, 4, 0, 2 * Math.PI);
+                            ctx.fillStyle = '#38bdf8';
+                            ctx.fill();
+                            ctx.restore();
+                          }
+                        }
+                      };
+                      
+                      return (
+                        <Line
+                          data={{
+                            labels,
+                            datasets: [
+                              {
+                                label: 'Population',
+                                data: bellData,
+                                borderColor: '#64748b',
+                                backgroundColor: 'rgba(100, 116, 139, 0.1)',
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0,
+                              }
+                            ]
+                          }}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                              tooltip: { enabled: false },
+                            },
+                            scales: {
+                              x: {
+                                grid: { display: false },
+                                ticks: { 
+                                  color: '#94a3b8',
+                                  maxTicksLimit: 6,
+                                }
+                              },
+                              y: {
+                                display: false,
+                              }
+                            }
+                          }}
+                          plugins={[verticalLinePlugin]}
+                        />
+                      );
+                    })()}
+                  </div>
                   <div className="mt-4 pt-4 border-t border-slate-700">
                     <p className="text-xs text-slate-400 leading-relaxed">
                       Score is a percentile-weighted average of all answers (z-score method). 
