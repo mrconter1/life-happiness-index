@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 
 interface Answers {
   [key: string]: string;
@@ -57,32 +56,41 @@ export default function Home() {
     return percentage.toFixed(1);
   };
 
-  const renderRadioQuestion = (
+  const renderSliderQuestion = (
     questionId: string,
     title: string,
-    options: string[]
-  ) => (
-    <div className="space-y-3">
-      <Label className="text-base font-medium">{title}</Label>
-      <RadioGroup
-        value={answers[questionId] || ''}
-        onValueChange={(value) => handleAnswerChange(questionId, value)}
-        className="space-y-2"
-      >
-        {options.map((option, index) => (
-          <div key={index} className="flex items-center space-x-2">
-            <RadioGroupItem value={index.toString()} id={`${questionId}-${index}`} />
-            <Label
-              htmlFor={`${questionId}-${index}`}
-              className="font-normal cursor-pointer"
-            >
-              {option}
-            </Label>
+    minLabel: string,
+    midLabel: string,
+    maxLabel: string
+  ) => {
+    const value = answers[questionId] ? parseInt(answers[questionId]) : 3;
+    
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Label className="text-base font-medium">{title}</Label>
+          <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
+            {value + 1}/7
+          </span>
+        </div>
+        <div className="space-y-2 pt-2">
+          <Slider
+            value={[value]}
+            onValueChange={(vals) => handleAnswerChange(questionId, vals[0].toString())}
+            min={0}
+            max={6}
+            step={1}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-slate-400 px-1">
+            <span className="text-left max-w-[30%]">{minLabel}</span>
+            <span className="text-center">{midLabel}</span>
+            <span className="text-right max-w-[30%]">{maxLabel}</span>
           </div>
-        ))}
-      </RadioGroup>
-    </div>
-  );
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 py-8 px-4">
@@ -109,49 +117,33 @@ export default function Home() {
             <CardTitle className="text-xl">1. Career & Income</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '1a',
               '1a. Annual salary compared to people your age?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '1b',
               '1b. Hours working per week compared to average?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '1c',
               '1c. Net worth compared to people your age?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '1d',
               '1d. How comfortable is your job?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Very uncomfortable',
+              'Average',
+              'Very comfortable'
             )}
           </CardContent>
         </Card>
@@ -162,27 +154,19 @@ export default function Home() {
             <CardTitle className="text-xl">2. Exercise</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '2a',
               '2a. How many times per week do you exercise?',
-              [
-                '0 times',
-                '1-2 times',
-                '3-4 times',
-                '5-6 times',
-                '7+ times'
-              ]
+              '0 times',
+              '3-4 times',
+              '7+ times'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '2b',
               '2b. How intense is your exercise on average?',
-              [
-                'No exercise',
-                'Light (walking, stretching)',
-                'Moderate (jogging, cycling)',
-                'High (running, intense cardio)',
-                'Very high (athlete-level)'
-              ]
+              'None',
+              'Moderate',
+              'Athlete-level'
             )}
           </CardContent>
         </Card>
@@ -193,38 +177,26 @@ export default function Home() {
             <CardTitle className="text-xl">3. Social Life</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '3a',
               '3a. How many hours per day do you interact with friends?',
-              [
-                '0 hours',
-                'Less than 1 hour',
-                '1-2 hours',
-                '3-4 hours',
-                '5+ hours'
-              ]
+              '0 hours',
+              '2-3 hours',
+              '5+ hours'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '3b',
               '3b. How many close friends do you have?',
-              [
-                '0-1 friends',
-                '2-4 friends',
-                '5-8 friends',
-                '9-15 friends',
-                '16+ friends'
-              ]
+              '0-1 friends',
+              '5-8 friends',
+              '16+ friends'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '3c',
               '3c. Length of your longest active friendship (years)?',
-              [
-                'Less than 1 year',
-                '1-5 years',
-                '6-10 years',
-                '11-20 years',
-                '20+ years'
-              ]
+              'Less than 1',
+              '10 years',
+              '20+ years'
             )}
           </CardContent>
         </Card>
@@ -274,27 +246,19 @@ export default function Home() {
             <CardTitle className="text-xl">5. Physical Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '5a',
               '5a. How many alcoholic drinks per week?',
-              [
-                '0 drinks',
-                '1-3 drinks',
-                '4-7 drinks',
-                '8-14 drinks',
-                '15+ drinks'
-              ]
+              '0 drinks',
+              '7-8 drinks',
+              '15+ drinks'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '5b',
               '5b. How many times per week do you use nicotine/tobacco?',
-              [
-                'Never',
-                'Once per week',
-                '2-3 times',
-                '4-6 times',
-                'Daily (7+ times)'
-              ]
+              'Never',
+              '3-4 times',
+              'Daily (7+)'
             )}
             
             {/* BMI Calculator */}
@@ -329,38 +293,26 @@ export default function Home() {
               )}
             </div>
 
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '5d',
               '5d. Dental hygiene routine?',
-              [
-                'Never brush or floss',
-                'Brush occasionally (few times per week)',
-                'Brush once daily',
-                'Brush twice daily + occasional floss',
-                'Brush and floss twice daily'
-              ]
+              'Never',
+              'Brush once daily',
+              'Brush & floss 2x daily'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '5e',
               '5e. How many times per week do you use recreational drugs?',
-              [
-                'Never',
-                'Once per week',
-                '2-3 times',
-                '4-6 times',
-                'Daily (7+ times)'
-              ]
+              'Never',
+              '3-4 times',
+              'Daily (7+)'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '5f',
               '5f. Chronic health conditions (e.g., back pain, migraines, arthritis)?',
-              [
-                'None',
-                'Minor condition',
-                'Manageable chronic condition',
-                'Multiple serious conditions',
-                'Terminal illness or severe conditions'
-              ]
+              'None',
+              'Manageable',
+              'Terminal/severe'
             )}
           </CardContent>
         </Card>
@@ -371,27 +323,19 @@ export default function Home() {
             <CardTitle className="text-xl">6. Education & Nutrition</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '6a',
               '6a. Education level compared to people your age?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '6b',
               '6b. How healthy do you eat overall?',
-              [
-                'Very unhealthy',
-                'Unhealthy',
-                'Average',
-                'Healthy',
-                'Very healthy'
-              ]
+              'Very unhealthy',
+              'Average',
+              'Very healthy'
             )}
           </CardContent>
         </Card>
@@ -402,27 +346,19 @@ export default function Home() {
             <CardTitle className="text-xl">7. Hobbies & Skills</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '7a',
               '7a. Number of hobbies compared to average?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '7b',
               '7b. Skill level in hobbies compared to average person?',
-              [
-                'Well below average (beginner)',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average (expert)'
-              ]
+              'Beginner',
+              'Average',
+              'Expert'
             )}
           </CardContent>
         </Card>
@@ -433,16 +369,12 @@ export default function Home() {
             <CardTitle className="text-xl">8. Sleep</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '8a',
               '8a. Sleep hours compared to recommended average?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average (optimal)'
-              ]
+              'Well below',
+              'Average',
+              'Optimal'
             )}
           </CardContent>
         </Card>
@@ -453,16 +385,12 @@ export default function Home() {
             <CardTitle className="text-xl">9. Romantic Relationship</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '9a',
               '9a. How many years in your current relationship?',
-              [
-                'None (single)',
-                'Less than 1 year',
-                '1-3 years',
-                '4-7 years',
-                '8+ years'
-              ]
+              'None (single)',
+              '3-4 years',
+              '8+ years'
             )}
           </CardContent>
         </Card>
@@ -473,16 +401,12 @@ export default function Home() {
             <CardTitle className="text-xl">10. Family Connection</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '10a',
               '10a. How good are your family relationships?',
-              [
-                'Very poor or no contact',
-                'Poor',
-                'Average',
-                'Good',
-                'Very good'
-              ]
+              'Very poor',
+              'Average',
+              'Very good'
             )}
           </CardContent>
         </Card>
@@ -493,38 +417,26 @@ export default function Home() {
             <CardTitle className="text-xl">11. Daily Structure & Outdoor</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '11a',
               '11a. Time spent outside per week (walking, nature, fresh air)?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '11b',
               '11b. Daily routine structure compared to average?',
-              [
-                'Well below average (chaotic)',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average (very structured)'
-              ]
+              'Chaotic',
+              'Average',
+              'Very structured'
             )}
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '11c',
               '11c. Active goals/projects compared to average?',
-              [
-                'Well below average',
-                'Below average',
-                'Average',
-                'Above average',
-                'Well above average'
-              ]
+              'Well below',
+              'Average',
+              'Well above'
             )}
           </CardContent>
         </Card>
@@ -535,16 +447,12 @@ export default function Home() {
             <CardTitle className="text-xl">12. Mental Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
+            {renderSliderQuestion(
               '12a',
-              '12a. If you\'ve had mental health issues, how many years of treatment and how many different approaches?',
-              [
-                'Currently struggling, no treatment (0 years, 0 approaches)',
-                'Limited: Under 1 year or 1-2 approaches',
-                'Moderate: 1-3 years and 3-5 approaches',
-                'Extensive: 3-5 years and 6-10 approaches',
-                'No issues or fully stable after 5+ years and 10+ approaches'
-              ]
+              '12a. Mental health treatment history',
+              'No treatment',
+              'Moderate treatment',
+              'Fully stable/No issues'
             )}
           </CardContent>
         </Card>
