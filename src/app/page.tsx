@@ -86,10 +86,19 @@ export default function Home() {
     return 9;
   };
 
+  // Convert z-score to percentile using approximation of normal CDF
+  const zScoreToPercentile = (z: number): number => {
+    // Approximation of cumulative distribution function for standard normal
+    const t = 1 / (1 + 0.2316419 * Math.abs(z));
+    const d = 0.3989423 * Math.exp(-z * z / 2);
+    const probability = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z >= 0 ? 1 - probability : probability;
+  };
+
   const calculateScore = () => {
     const scores: number[] = [];
     
-    console.log('=== DEBUG: Calculate Score ===');
+    console.log('=== DEBUG: Calculate Score (Z-Score Method) ===');
     console.log('Raw answers:', answers);
     console.log('Height:', height, 'Weight:', weight);
     console.log('Salary:', salary, 'Savings:', savings);
@@ -97,38 +106,59 @@ export default function Home() {
     // Questions where LEFT (0) is BEST and should be inverted
     const invertedQuestions = ['5a', '5b', '5d', '5e', '1e', '11e'];
     
-    // Add all slider question scores (direct 0-10 values)
+    // Add all slider question scores with z-score transformation
     Object.entries(answers).forEach(([key, value]) => {
-      let score = parseFloat(value);
+      let rawValue = parseFloat(value);
       
       // Invert if this question has best answer on left
       if (invertedQuestions.includes(key)) {
-        const originalValue = score;
-        score = 10 - score; // Flip the scale
-        console.log(`Question ${key}: ${originalValue.toFixed(1)} → INVERTED to ${score.toFixed(1)}`);
+        const originalValue = rawValue;
+        rawValue = 10 - rawValue; // Flip the scale
+        console.log(`Question ${key}: ${originalValue.toFixed(1)} → INVERTED to ${rawValue.toFixed(1)}`);
       } else {
-        console.log(`Question ${key}: ${score.toFixed(1)}`);
+        console.log(`Question ${key}: ${rawValue.toFixed(1)}`);
       }
       
-      scores.push(score);
+      // Convert to z-score (assuming 5 = mean, 2 = 1 SD)
+      // 0/10 = -2.5 SD, 5/10 = 0 SD, 10/10 = +2.5 SD
+      const zScore = (rawValue - 5) / 2;
+      
+      // Convert z-score to percentile (0-1)
+      const percentile = zScoreToPercentile(zScore);
+      
+      // Convert percentile to 0-10 scale
+      const normalizedScore = percentile * 10;
+      
+      console.log(`  → z-score: ${zScore.toFixed(2)}, percentile: ${(percentile * 100).toFixed(1)}%, score: ${normalizedScore.toFixed(2)}`);
+      scores.push(normalizedScore);
     });
     
-    // Add BMI score if available (convert 0-9 to 0-10 scale)
+    // Add BMI score if available (0-9 scale, convert via z-score)
     const bmiScore = getBMIScore();
     console.log('BMI Score (0-9):', bmiScore);
     if (bmiScore !== null) {
-      const scaledBMI = (bmiScore / 9) * 10; // Scale to 0-10
-      console.log(`  → scaled to 0-10: ${scaledBMI.toFixed(2)}`);
-      scores.push(scaledBMI);
+      // Scale 0-9 to 0-10 first
+      const scaled = (bmiScore / 9) * 10;
+      // Then apply z-score transformation
+      const zScore = (scaled - 5) / 2;
+      const percentile = zScoreToPercentile(zScore);
+      const normalizedScore = percentile * 10;
+      console.log(`  → scaled: ${scaled.toFixed(2)}, z: ${zScore.toFixed(2)}, percentile: ${(percentile * 100).toFixed(1)}%, score: ${normalizedScore.toFixed(2)}`);
+      scores.push(normalizedScore);
     }
     
-    // Add savings score if available (convert 0-9 to 0-10 scale)
+    // Add savings score if available (0-9 scale, convert via z-score)
     const savingsScore = getSavingsScore();
     console.log('Savings Score (0-9):', savingsScore);
     if (savingsScore !== null) {
-      const scaledSavings = (savingsScore / 9) * 10; // Scale to 0-10
-      console.log(`  → scaled to 0-10: ${scaledSavings.toFixed(2)}`);
-      scores.push(scaledSavings);
+      // Scale 0-9 to 0-10 first
+      const scaled = (savingsScore / 9) * 10;
+      // Then apply z-score transformation
+      const zScore = (scaled - 5) / 2;
+      const percentile = zScoreToPercentile(zScore);
+      const normalizedScore = percentile * 10;
+      console.log(`  → scaled: ${scaled.toFixed(2)}, z: ${zScore.toFixed(2)}, percentile: ${(percentile * 100).toFixed(1)}%, score: ${normalizedScore.toFixed(2)}`);
+      scores.push(normalizedScore);
     }
     
     console.log('All scores:', scores);
@@ -649,7 +679,7 @@ export default function Home() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Calculate Your Score</CardTitle>
             <CardDescription className="text-base mt-2">
-              Your responses are processed locally in your browser using simple averaging.
+              Your responses are processed locally using statistical z-score transformation.
               <span className="block mt-1 text-slate-300 font-medium">
                 🔒 No data is sent to any server.
               </span>
@@ -675,9 +705,9 @@ export default function Home() {
                   <p className="text-sm text-slate-400">out of 10.00</p>
                   <div className="mt-4 pt-4 border-t border-slate-700">
                     <p className="text-sm text-slate-300 leading-relaxed">
-                      This score represents the average of all your responses, 
-                      indicating how likely you are to genuinely want to exist based on 
-                      multiple life satisfaction factors.
+                      This score uses z-score transformation assuming normal distribution. 
+                      Being above average (5/10) has exponentially more impact than being 
+                      below average, reflecting how life satisfaction works in reality.
                     </p>
                   </div>
                 </div>
