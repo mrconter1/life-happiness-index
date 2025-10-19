@@ -119,28 +119,28 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '1a',
-              '1a. Annual salary compared to people your age?',
+              'Annual salary compared to people your age?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '1b',
-              '1b. Hours working per week compared to average?',
+              'Hours working per week compared to average?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '1c',
-              '1c. Net worth compared to people your age?',
+              'Net worth compared to people your age?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '1d',
-              '1d. How comfortable is your job?',
+              'How comfortable is your job?',
               'Very uncomfortable',
               'Average',
               'Very comfortable'
@@ -156,14 +156,14 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '2a',
-              '2a. How many times per week do you exercise?',
+              'How many times per week do you exercise?',
               '0 times',
               '3-4 times',
               '7+ times'
             )}
             {renderSliderQuestion(
               '2b',
-              '2b. How intense is your exercise on average?',
+              'How intense is your exercise on average?',
               'None',
               'Moderate',
               'Athlete-level'
@@ -179,21 +179,21 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '3a',
-              '3a. How many hours per day do you interact with friends?',
+              'How many hours per day do you interact with friends?',
               '0 hours',
               '2-3 hours',
               '5+ hours'
             )}
             {renderSliderQuestion(
               '3b',
-              '3b. How many close friends do you have?',
+              'How many close friends do you have?',
               '0-1 friends',
               '5-8 friends',
               '16+ friends'
             )}
             {renderSliderQuestion(
               '3c',
-              '3c. Length of your longest active friendship (years)?',
+              'Length of your longest active friendship (years)?',
               'Less than 1',
               '10 years',
               '20+ years'
@@ -210,7 +210,7 @@ export default function Home() {
             <div className="space-y-6">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium">4a. Monthly salary</Label>
+                  <Label className="text-base font-medium">Monthly salary</Label>
                   <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
                     {parseFloat(salary || '0').toLocaleString()}
                   </span>
@@ -234,7 +234,7 @@ export default function Home() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium">4b. Monthly savings</Label>
+                  <Label className="text-base font-medium">Monthly savings</Label>
                   <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
                     {parseFloat(savings || '0') >= 0 ? '+' : ''}{parseFloat(savings || '0').toLocaleString()}
                   </span>
@@ -275,24 +275,45 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '5a',
-              '5a. How many alcoholic drinks per week?',
+              'How many alcoholic drinks per week?',
               '0 drinks',
               '7-8 drinks',
               '15+ drinks'
             )}
             {renderSliderQuestion(
               '5b',
-              '5b. How many times per week do you use nicotine/tobacco?',
+              'How many times per week do you use nicotine/tobacco?',
               'Never',
               '3-4 times',
               'Daily (7+)'
+            )}
+            {renderSliderQuestion(
+              '5c',
+              'Dental hygiene routine?',
+              'Never',
+              'Brush once daily',
+              'Brush & floss 2x daily'
+            )}
+            {renderSliderQuestion(
+              '5d',
+              'How many times per week do you use recreational drugs?',
+              'Never',
+              '3-4 times',
+              'Daily (7+)'
+            )}
+            {renderSliderQuestion(
+              '5e',
+              'Chronic health conditions (e.g., back pain, migraines, arthritis)?',
+              'None',
+              'Manageable',
+              'Terminal/severe'
             )}
             
             {/* BMI Calculator */}
             <div className="space-y-6">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium">5c. Height (cm)</Label>
+                  <Label className="text-base font-medium">Height (cm)</Label>
                   <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
                     {parseFloat(height || '0')} cm
                   </span>
@@ -316,7 +337,7 @@ export default function Home() {
 
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <Label className="text-base font-medium">5d. Weight (kg)</Label>
+                  <Label className="text-base font-medium">Weight (kg)</Label>
                   <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
                     {parseFloat(weight || '0')} kg
                   </span>
@@ -346,28 +367,6 @@ export default function Home() {
                 </div>
               )}
             </div>
-
-            {renderSliderQuestion(
-              '5e',
-              '5e. Dental hygiene routine?',
-              'Never',
-              'Brush once daily',
-              'Brush & floss 2x daily'
-            )}
-            {renderSliderQuestion(
-              '5f',
-              '5f. How many times per week do you use recreational drugs?',
-              'Never',
-              '3-4 times',
-              'Daily (7+)'
-            )}
-            {renderSliderQuestion(
-              '5g',
-              '5g. Chronic health conditions (e.g., back pain, migraines, arthritis)?',
-              'None',
-              'Manageable',
-              'Terminal/severe'
-            )}
           </CardContent>
         </Card>
 
@@ -379,14 +378,14 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '6a',
-              '6a. Education level compared to people your age?',
+              'Education level compared to people your age?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '6b',
-              '6b. How healthy do you eat overall?',
+              'How healthy do you eat overall?',
               'Very unhealthy',
               'Average',
               'Very healthy'
@@ -402,14 +401,14 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '7a',
-              '7a. Number of hobbies compared to average?',
+              'Number of hobbies compared to average?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '7b',
-              '7b. Skill level in hobbies compared to average person?',
+              'Skill level in hobbies compared to average person?',
               'Beginner',
               'Average',
               'Expert'
@@ -425,7 +424,7 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '8a',
-              '8a. Sleep hours compared to recommended average?',
+              'Sleep hours compared to recommended average?',
               'Well below',
               'Average',
               'Optimal'
@@ -441,7 +440,7 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '9a',
-              '9a. How many years in your current relationship?',
+              'How many years in your current relationship?',
               'None (single)',
               '3-4 years',
               '8+ years'
@@ -457,7 +456,7 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '10a',
-              '10a. How good are your family relationships?',
+              'How good are your family relationships?',
               'Very poor',
               'Average',
               'Very good'
@@ -473,21 +472,21 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '11a',
-              '11a. Time spent outside per week (walking, nature, fresh air)?',
+              'Time spent outside per week (walking, nature, fresh air)?',
               'Well below',
               'Average',
               'Well above'
             )}
             {renderSliderQuestion(
               '11b',
-              '11b. Daily routine structure compared to average?',
+              'Daily routine structure compared to average?',
               'Chaotic',
               'Average',
               'Very structured'
             )}
             {renderSliderQuestion(
               '11c',
-              '11c. Active goals/projects compared to average?',
+              'Active goals/projects compared to average?',
               'Well below',
               'Average',
               'Well above'
@@ -503,7 +502,7 @@ export default function Home() {
           <CardContent className="space-y-6">
             {renderSliderQuestion(
               '12a',
-              '12a. If mental health has been a challenge, how thoroughly have you addressed it?',
+              'If mental health has been a challenge, how thoroughly have you addressed it?',
               'No effort',
               'Serious effort',
               'N/A or exhaustive'
