@@ -15,6 +15,8 @@ export default function Home() {
   const [answers, setAnswers] = useState<Answers>({});
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
+  const [salary, setSalary] = useState('');
+  const [savings, setSavings] = useState('');
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -24,13 +26,15 @@ export default function Home() {
       setAnswers(parsed.answers || {});
       setHeight(parsed.height || '');
       setWeight(parsed.weight || '');
+      setSalary(parsed.salary || '');
+      setSavings(parsed.savings || '');
     }
   }, []);
 
   // Save to localStorage whenever answers change
   useEffect(() => {
-    localStorage.setItem('lifeHappinessIndex', JSON.stringify({ answers, height, weight }));
-  }, [answers, height, weight]);
+    localStorage.setItem('lifeHappinessIndex', JSON.stringify({ answers, height, weight, salary, savings }));
+  }, [answers, height, weight, salary, savings]);
 
   const handleAnswerChange = (questionId: string, value: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
@@ -42,6 +46,15 @@ export default function Home() {
     const weightKg = parseFloat(weight);
     const bmi = weightKg / (heightM * heightM);
     return bmi.toFixed(1);
+  };
+
+  const calculateSavingsPercentage = () => {
+    if (!salary || !savings) return null;
+    const salaryNum = parseFloat(salary);
+    const savingsNum = parseFloat(savings);
+    if (salaryNum === 0) return null;
+    const percentage = (savingsNum / salaryNum) * 100;
+    return percentage.toFixed(1);
   };
 
   const renderRadioQuestion = (
@@ -222,17 +235,36 @@ export default function Home() {
             <CardTitle className="text-xl">4. Financial Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {renderRadioQuestion(
-              '4a',
-              '4a. What percentage of your salary do you save monthly?',
-              [
-                'Negative (losing money)',
-                '0-5%',
-                '6-15%',
-                '16-30%',
-                '30%+'
-              ]
-            )}
+            <div className="space-y-3">
+              <Label className="text-base font-medium">4a. Monthly financial information</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="salary" className="text-sm">Monthly salary</Label>
+                  <Input
+                    id="salary"
+                    type="number"
+                    placeholder="50000"
+                    value={salary}
+                    onChange={(e) => setSalary(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="savings" className="text-sm">Monthly savings</Label>
+                  <Input
+                    id="savings"
+                    type="number"
+                    placeholder="10000"
+                    value={savings}
+                    onChange={(e) => setSavings(e.target.value)}
+                  />
+                </div>
+              </div>
+              {calculateSavingsPercentage() && (
+                <p className="text-sm text-slate-400">
+                  Savings rate: <span className="font-semibold">{calculateSavingsPercentage()}%</span>
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
 
