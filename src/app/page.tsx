@@ -63,14 +63,14 @@ export default function Home() {
     midLabel: string,
     maxLabel: string
   ) => {
-    const value = answers[questionId] ? parseInt(answers[questionId]) : 3;
+    const value = answers[questionId] ? parseInt(answers[questionId]) : 4;
     
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-base font-medium">{title}</Label>
           <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
-            {value + 1}/7
+            {value + 1}/10
           </span>
         </div>
         <div className="space-y-2 pt-2">
@@ -78,7 +78,7 @@ export default function Home() {
             value={[value]}
             onValueChange={(vals) => handleAnswerChange(questionId, vals[0].toString())}
             min={0}
-            max={6}
+            max={9}
             step={1}
             className="w-full"
           />
