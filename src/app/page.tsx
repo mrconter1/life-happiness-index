@@ -304,8 +304,8 @@ export default function Home() {
                 'Never brush or floss',
                 'Brush occasionally (few times per week)',
                 'Brush once daily',
-                'Brush twice daily',
-                'Brush twice daily + occasional floss'
+                'Brush twice daily + occasional floss',
+                'Brush and floss twice daily'
               ]
             )}
             {renderRadioQuestion(
