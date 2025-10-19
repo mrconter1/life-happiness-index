@@ -89,52 +89,36 @@ export default function Home() {
   const calculateScore = () => {
     const scores: number[] = [];
     
-    console.log('=== DEBUG: Calculate Score ===');
-    console.log('Raw answers:', answers);
-    console.log('Height:', height, 'Weight:', weight);
-    console.log('Salary:', salary, 'Savings:', savings);
-    
     // Questions where LEFT (0) is BEST and should be inverted
     const invertedQuestions = ['5a', '5b', '5d', '5e', '1e', '11e'];
     
-    // Add all slider question scores
+    // Add all slider question scores (map 0-10 to 0.1-0.9)
     Object.entries(answers).forEach(([key, value]) => {
-      let rawValue = parseInt(value);
+      let rawValue = parseFloat(value);
       
       // Invert if this question has best answer on left
       if (invertedQuestions.includes(key)) {
-        rawValue = 9 - rawValue; // Flip the scale
-        console.log(`Question ${key}: ${value} → INVERTED to ${rawValue} → shifted: ${rawValue + 1} → normalized: ${(rawValue + 1) / 10}`);
-      } else {
-        console.log(`Question ${key}: ${value} → shifted: ${rawValue + 1} → normalized: ${(rawValue + 1) / 10}`);
+        rawValue = 10 - rawValue; // Flip the scale
       }
       
-      const shifted = rawValue + 1; // 0-9 becomes 1-10
-      const normalized = shifted / 10; // normalize to 0.1-1.0
+      // Map 0-10 to 0.1-0.9 range (no perfect 1.0, no devastating 0)
+      const normalized = 0.1 + (rawValue / 10) * 0.8;
       scores.push(normalized);
     });
     
-    // Add BMI score if available
+    // Add BMI score if available (map 0-9 to 0.1-0.9)
     const bmiScore = getBMIScore();
-    console.log('BMI Score:', bmiScore);
     if (bmiScore !== null) {
-      const shifted = bmiScore + 1; // 0-9 becomes 1-10
-      const normalized = shifted / 10;
-      console.log(`BMI: ${bmiScore} → shifted: ${shifted} → normalized: ${normalized}`);
+      const normalized = 0.1 + (bmiScore / 9) * 0.8;
       scores.push(normalized);
     }
     
-    // Add savings score if available
+    // Add savings score if available (map 0-9 to 0.1-0.9)
     const savingsScore = getSavingsScore();
-    console.log('Savings Score:', savingsScore);
     if (savingsScore !== null) {
-      const shifted = savingsScore + 1; // 0-9 becomes 1-10
-      const normalized = shifted / 10;
-      console.log(`Savings: ${savingsScore} → shifted: ${shifted} → normalized: ${normalized}`);
+      const normalized = 0.1 + (savingsScore / 9) * 0.8;
       scores.push(normalized);
     }
-    
-    console.log('All normalized scores:', scores);
     
     if (scores.length === 0) {
       alert('Please answer at least one question before calculating your score.');
@@ -143,17 +127,10 @@ export default function Home() {
     
     // Calculate geometric mean: (Q1 × Q2 × Q3 × ... × QN)^(1/N)
     const product = scores.reduce((acc, val) => acc * val, 1);
-    console.log('Product:', product);
-    console.log('N (count):', scores.length);
-    
     const geometricMean = Math.pow(product, 1 / scores.length);
-    console.log('Geometric mean:', geometricMean);
     
     // Convert back to 0-10 scale
     const finalScore = geometricMean * 10;
-    console.log('Final score (0-10):', finalScore);
-    console.log('=== END DEBUG ===');
-    
     setScore(finalScore);
     
     // Scroll to results
@@ -169,14 +146,14 @@ export default function Home() {
     midLabel: string,
     maxLabel: string
   ) => {
-    const value = answers[questionId] ? parseInt(answers[questionId]) : 4;
+    const value = answers[questionId] ? parseFloat(answers[questionId]) : 5;
     
-  return (
+    return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-base font-medium">{title}</Label>
           <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
-            {value + 1}/10
+            {value.toFixed(1)}/10
           </span>
         </div>
         <div className="space-y-2 pt-2">
@@ -184,8 +161,8 @@ export default function Home() {
             value={[value]}
             onValueChange={(vals) => handleAnswerChange(questionId, vals[0].toString())}
             min={0}
-            max={9}
-            step={1}
+            max={10}
+            step={0.1}
             className="w-full"
           />
           <div className="flex justify-between text-xs text-slate-400 px-1">
@@ -461,7 +438,7 @@ export default function Home() {
                   <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
                     {parseFloat(weight || '0')} kg
                   </span>
-                </div>
+        </div>
                 <div className="space-y-2 pt-2">
                   <Slider
                     value={[parseFloat(weight || '0')]}
