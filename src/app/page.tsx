@@ -145,6 +145,13 @@ export default function Home() {
               'Average',
               'Very comfortable'
             )}
+            {renderSliderQuestion(
+              '1e',
+              'Daily commute time?',
+              'Under 15 min/remote',
+              '30-60 min',
+              '2+ hours'
+            )}
           </CardContent>
         </Card>
 
@@ -308,6 +315,13 @@ export default function Home() {
               'Manageable',
               'Terminal/severe'
             )}
+            {renderSliderQuestion(
+              '5f',
+              'Personal hygiene (showering/grooming frequency)?',
+              'Well below average',
+              'Average',
+              'Well above average'
+            )}
             
             {/* BMI Calculator */}
             <div className="space-y-6">
@@ -445,6 +459,13 @@ export default function Home() {
               '3-4 years',
               '8+ years'
             )}
+            {renderSliderQuestion(
+              '9b',
+              'Sexual activity frequency?',
+              'Never',
+              'Monthly',
+              'Multiple times/week'
+            )}
           </CardContent>
         </Card>
 
@@ -497,6 +518,13 @@ export default function Home() {
               'Very messy',
               'Average',
               'Very clean & organized'
+            )}
+            {renderSliderQuestion(
+              '11e',
+              'Hours per day on recreational screens/social media?',
+              'Under 1 hour',
+              '2-4 hours',
+              '6+ hours'
             )}
           </CardContent>
         </Card>
