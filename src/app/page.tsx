@@ -97,64 +97,57 @@ export default function Home() {
     // Questions where LEFT (0) is BEST and should be inverted
     const invertedQuestions = ['5a', '5b', '5d', '5e', '1e', '11e'];
     
-    // Add all slider question scores (map 0-10 to 0.1-0.9)
+    // Add all slider question scores (direct 0-10 values)
     Object.entries(answers).forEach(([key, value]) => {
-      let rawValue = parseFloat(value);
+      let score = parseFloat(value);
       
       // Invert if this question has best answer on left
       if (invertedQuestions.includes(key)) {
-        const originalValue = rawValue;
-        rawValue = 10 - rawValue; // Flip the scale
-        console.log(`Question ${key}: ${originalValue.toFixed(1)} → INVERTED to ${rawValue.toFixed(1)}`);
+        const originalValue = score;
+        score = 10 - score; // Flip the scale
+        console.log(`Question ${key}: ${originalValue.toFixed(1)} → INVERTED to ${score.toFixed(1)}`);
       } else {
-        console.log(`Question ${key}: ${rawValue.toFixed(1)}`);
+        console.log(`Question ${key}: ${score.toFixed(1)}`);
       }
       
-      // Map 0-10 to 0.1-0.9 range (no perfect 1.0, no devastating 0)
-      const normalized = 0.1 + (rawValue / 10) * 0.8;
-      console.log(`  → normalized: ${normalized.toFixed(3)}`);
-      scores.push(normalized);
+      scores.push(score);
     });
     
-    // Add BMI score if available (map 0-9 to 0.1-0.9)
+    // Add BMI score if available (convert 0-9 to 0-10 scale)
     const bmiScore = getBMIScore();
-    console.log('BMI Score:', bmiScore);
+    console.log('BMI Score (0-9):', bmiScore);
     if (bmiScore !== null) {
-      const normalized = 0.1 + (bmiScore / 9) * 0.8;
-      console.log(`  → normalized: ${normalized.toFixed(3)}`);
-      scores.push(normalized);
+      const scaledBMI = (bmiScore / 9) * 10; // Scale to 0-10
+      console.log(`  → scaled to 0-10: ${scaledBMI.toFixed(2)}`);
+      scores.push(scaledBMI);
     }
     
-    // Add savings score if available (map 0-9 to 0.1-0.9)
+    // Add savings score if available (convert 0-9 to 0-10 scale)
     const savingsScore = getSavingsScore();
-    console.log('Savings Score:', savingsScore);
+    console.log('Savings Score (0-9):', savingsScore);
     if (savingsScore !== null) {
-      const normalized = 0.1 + (savingsScore / 9) * 0.8;
-      console.log(`  → normalized: ${normalized.toFixed(3)}`);
-      scores.push(normalized);
+      const scaledSavings = (savingsScore / 9) * 10; // Scale to 0-10
+      console.log(`  → scaled to 0-10: ${scaledSavings.toFixed(2)}`);
+      scores.push(scaledSavings);
     }
     
-    console.log('All normalized scores:', scores);
+    console.log('All scores:', scores);
     
     if (scores.length === 0) {
       alert('Please answer at least one question before calculating your score.');
       return;
     }
     
-    // Calculate geometric mean: (Q1 × Q2 × Q3 × ... × QN)^(1/N)
-    const product = scores.reduce((acc, val) => acc * val, 1);
-    console.log('Product:', product);
+    // Calculate arithmetic mean (simple average)
+    const sum = scores.reduce((acc, val) => acc + val, 0);
+    const arithmeticMean = sum / scores.length;
+    console.log('Sum:', sum);
     console.log('N (count):', scores.length);
-    
-    const geometricMean = Math.pow(product, 1 / scores.length);
-    console.log('Geometric mean:', geometricMean);
-    
-    // Convert back to 0-10 scale
-    const finalScore = geometricMean * 10;
-    console.log('Final score (0-10):', finalScore);
+    console.log('Arithmetic mean:', arithmeticMean);
+    console.log('Final score (0-10):', arithmeticMean);
     console.log('=== END DEBUG ===');
     
-    setScore(finalScore);
+    setScore(arithmeticMean);
     
     // Scroll to results
     setTimeout(() => {
@@ -656,7 +649,7 @@ export default function Home() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Calculate Your Score</CardTitle>
             <CardDescription className="text-base mt-2">
-              Your responses are processed locally in your browser using geometric mean.
+              Your responses are processed locally in your browser using simple averaging.
               <span className="block mt-1 text-slate-300 font-medium">
                 🔒 No data is sent to any server.
               </span>
@@ -682,7 +675,7 @@ export default function Home() {
                   <p className="text-sm text-slate-400">out of 10.00</p>
                   <div className="mt-4 pt-4 border-t border-slate-700">
                     <p className="text-sm text-slate-300 leading-relaxed">
-                      This score represents the geometric mean of all your responses, 
+                      This score represents the average of all your responses, 
                       indicating how likely you are to genuinely want to exist based on 
                       multiple life satisfaction factors.
                     </p>
