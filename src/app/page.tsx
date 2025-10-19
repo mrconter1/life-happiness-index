@@ -207,34 +207,61 @@ export default function Home() {
             <CardTitle className="text-xl">4. Financial Health</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-3">
-              <Label className="text-base font-medium">4a. Monthly financial information</Label>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="salary" className="text-sm">Monthly salary</Label>
-                  <Input
-                    id="salary"
-                    type="number"
-                    placeholder="50000"
-                    value={salary}
-                    onChange={(e) => setSalary(e.target.value)}
-                  />
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium">4a. Monthly salary</Label>
+                  <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
+                    {parseFloat(salary || '0').toLocaleString()}
+                  </span>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="savings" className="text-sm">Monthly savings</Label>
-                  <Input
-                    id="savings"
-                    type="number"
-                    placeholder="10000"
-                    value={savings}
-                    onChange={(e) => setSavings(e.target.value)}
+                <div className="space-y-2 pt-2">
+                  <Slider
+                    value={[parseFloat(salary || '0')]}
+                    onValueChange={(vals) => setSalary(vals[0].toString())}
+                    min={0}
+                    max={150000}
+                    step={500}
+                    className="w-full"
                   />
+                  <div className="flex justify-between text-xs text-slate-400 px-1">
+                    <span>0</span>
+                    <span>75k</span>
+                    <span>150k</span>
+                  </div>
                 </div>
               </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium">4b. Monthly savings</Label>
+                  <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
+                    {parseFloat(savings || '0') >= 0 ? '+' : ''}{parseFloat(savings || '0').toLocaleString()}
+                  </span>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <Slider
+                    value={[parseFloat(savings || '0')]}
+                    onValueChange={(vals) => setSavings(vals[0].toString())}
+                    min={-10000}
+                    max={50000}
+                    step={500}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-slate-400 px-1">
+                    <span>-10k</span>
+                    <span>20k</span>
+                    <span>50k</span>
+                  </div>
+                </div>
+              </div>
+
               {calculateSavingsPercentage() && (
-                <p className="text-sm text-slate-400">
-                  Savings rate: <span className="font-semibold">{calculateSavingsPercentage()}%</span>
-                </p>
+                <div className="text-center pt-2">
+                  <p className="text-sm text-slate-400">
+                    Savings rate: <span className="font-semibold text-green-400">{calculateSavingsPercentage()}%</span>
+                  </p>
+                </div>
               )}
             </div>
           </CardContent>
