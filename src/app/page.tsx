@@ -65,7 +65,7 @@ export default function Home() {
   ) => {
     const value = answers[questionId] ? parseInt(answers[questionId]) : 4;
     
-    return (
+  return (
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-base font-medium">{title}</Label>
@@ -289,54 +289,81 @@ export default function Home() {
             )}
             
             {/* BMI Calculator */}
-            <div className="space-y-3">
-              <Label className="text-base font-medium">5c. Height and weight</Label>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="height" className="text-sm">Height (cm)</Label>
-                  <Input
-                    id="height"
-                    type="number"
-                    placeholder="175"
-                    value={height}
-                    onChange={(e) => setHeight(e.target.value)}
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium">5c. Height (cm)</Label>
+                  <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
+                    {parseFloat(height || '0')} cm
+                  </span>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <Slider
+                    value={[parseFloat(height || '0')]}
+                    onValueChange={(vals) => setHeight(vals[0].toString())}
+                    min={140}
+                    max={220}
+                    step={0.5}
+                    className="w-full"
                   />
-        </div>
-                <div className="space-y-2">
-                  <Label htmlFor="weight" className="text-sm">Weight (kg)</Label>
-                  <Input
-                    id="weight"
-                    type="number"
-                    placeholder="70"
-                    value={weight}
-                    onChange={(e) => setWeight(e.target.value)}
-                  />
+                  <div className="flex justify-between text-xs text-slate-400 px-1">
+                    <span>140 cm</span>
+                    <span>180 cm</span>
+                    <span>220 cm</span>
+                  </div>
                 </div>
               </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Label className="text-base font-medium">5d. Weight (kg)</Label>
+                  <span className="text-sm font-semibold text-blue-400 bg-blue-950/50 px-3 py-1 rounded-full">
+                    {parseFloat(weight || '0')} kg
+                  </span>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <Slider
+                    value={[parseFloat(weight || '0')]}
+                    onValueChange={(vals) => setWeight(vals[0].toString())}
+                    min={40}
+                    max={200}
+                    step={0.5}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-xs text-slate-400 px-1">
+                    <span>40 kg</span>
+                    <span>120 kg</span>
+                    <span>200 kg</span>
+                  </div>
+                </div>
+              </div>
+
               {calculateBMI() && (
-                <p className="text-sm text-slate-600">
-                  BMI: <span className="font-semibold">{calculateBMI()}</span>
-                </p>
+                <div className="text-center pt-2">
+                  <p className="text-sm text-slate-400">
+                    BMI: <span className="font-semibold text-purple-400">{calculateBMI()}</span>
+                  </p>
+                </div>
               )}
             </div>
 
             {renderSliderQuestion(
-              '5d',
-              '5d. Dental hygiene routine?',
+              '5e',
+              '5e. Dental hygiene routine?',
               'Never',
               'Brush once daily',
               'Brush & floss 2x daily'
             )}
             {renderSliderQuestion(
-              '5e',
-              '5e. How many times per week do you use recreational drugs?',
+              '5f',
+              '5f. How many times per week do you use recreational drugs?',
               'Never',
               '3-4 times',
               'Daily (7+)'
             )}
             {renderSliderQuestion(
-              '5f',
-              '5f. Chronic health conditions (e.g., back pain, migraines, arthritis)?',
+              '5g',
+              '5g. Chronic health conditions (e.g., back pain, migraines, arthritis)?',
               'None',
               'Manageable',
               'Terminal/severe'
