@@ -254,8 +254,10 @@ export default function Home() {
               Life Happiness Index
             </CardTitle>
             <CardDescription className="text-base mt-3 leading-relaxed">
-              This metric predicts how likely you are to be happy—defined as genuinely wanting to exist. 
-              Answer each question from a long-term perspective, not just this week. 
+              This metric predicts your likelihood of being happy (genuinely wanting to exist). 
+              Answer from a <strong>long-term perspective</strong>, not just this week. 
+              Having a <strong>top score</strong> means that you will prefer existence, 
+              but having a low score doesn&apos;t necessarily mean the opposite.
               <span className="block mt-2 font-medium text-slate-300">
                 🔒 All data is saved locally in your browser. Nothing is sent externally.
               </span>
